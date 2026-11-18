@@ -1,5 +1,5 @@
 {
- "query": "Dreamcast",
+ "query": "lego",
  "params": {
   "category": "Toys",
   "max_price": "",
@@ -7,49 +7,319 @@
   "exclude": "",
   "sources": [
    "slickdeals",
-   "ebay"
+   "shopping"
   ]
  },
- "run_at": "2026-11-18T06:00:14+00:00",
- "run_id": "44248111843",
+ "run_at": "2026-11-18T06:01:51+00:00",
+ "run_id": "44248326462",
  "results": [
   {
-   "id": "3f2b6094cc4c",
+   "id": "879038ce427d",
    "source": "slickdeals",
-   "title": "Anbernic RG Vita Retro Game Emulation Handheld - $68 + FS @ AliExpress (up to PSP, N64 & Dreamcast)",
-   "url": "https://slickdeals.net/f/19926432-anbernic-rg-vita-retro-game-emulation-handheld-68-fs-aliexpress-up-to-psp-n64-dreamcast?utm_source=rss&utm_content=def&utm_medium=RSS2",
-   "price": 68.0,
+   "title": "799 Pcs LEGO Icons Williams Racing FW14B & Nigel Mansell (10353) $40 + Free S&H at Amazon",
+   "url": "https://slickdeals.net/f/20330898-799-pcs-lego-icons-williams-racing-fw14b-nigel-mansell-10353-40-free-s-h-at-amazon?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 40.0,
    "shipping": null,
-   "qty": 1,
-   "bulk": false,
-   "image": "https://static.slickdealscdn.com/attachment/2/5/1/6/8/8/6/300x300/21394317.thumb",
-   "posted": "2026-08-26T04:43:56+00:00"
+   "qty": 799,
+   "bulk": true,
+   "image": "https://static.slickdealscdn.com/attachment/2/9/8/1/5/7/1/1/300x300/22410207.thumb",
+   "posted": "2026-11-18T02:18:31+00:00"
   },
   {
-   "id": "60d8e4b6b2f9",
+   "id": "3c9a443cd203",
    "source": "slickdeals",
-   "title": "Anbernic RG Vita Retro Game Emulation Handheld - $70.10 + FS @ AliExpress (up to PSP, N64 & Dreamcast)",
-   "url": "https://slickdeals.net/f/20292840-anbernic-rg-vita-retro-game-emulation-handheld-70-10-fs-aliexpress-up-to-psp-n64-dreamcast?utm_source=rss&utm_content=def&utm_medium=RSS2",
-   "price": 70.1,
+   "title": "83 Pcs LEGO DUPLO Bluey: Bluey’s Family House with Memory Game (10459) $40 + Free S&H at Amazon",
+   "url": "https://slickdeals.net/f/20330949-83-pcs-lego-duplo-bluey-bluey-s-family-house-with-memory-game-10459-40-free-s-h-at-amazon?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 40.0,
+   "shipping": null,
+   "qty": 83,
+   "bulk": true,
+   "image": "https://static.slickdealscdn.com/attachment/2/9/8/1/5/7/1/1/300x300/22410351.thumb",
+   "posted": "2026-11-18T02:25:24+00:00"
+  },
+  {
+   "id": "8a7d84aa11a6",
+   "source": "slickdeals",
+   "title": "The LEGO Movie: Videogame (PC) $1.09",
+   "url": "https://slickdeals.net/f/20329140-the-lego-movie-videogame-pc-1-09?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 1.09,
    "shipping": null,
    "qty": 1,
    "bulk": false,
-   "image": "https://static.slickdealscdn.com/attachment/2/5/1/6/8/8/6/300x300/22306884.thumb",
-   "posted": "2026-11-11T20:32:02+00:00"
+   "image": "https://static.slickdealscdn.com/attachment/2/3/5/6/9/3/9/9/300x300/22404627.thumb",
+   "posted": "2026-11-17T20:17:59+00:00"
+  },
+  {
+   "id": "cd76c5c90b54",
+   "source": "slickdeals",
+   "title": "$19.13 | 5-Pack 153-Piece LEGO Creator: 3 in 1 - Surprising Spider (31159, 2025) at Amazon",
+   "url": "https://slickdeals.net/f/20328714-19-13-5-pack-153-piece-lego-creator-3-in-1-surprising-spider-31159-2025-at-amazon?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 19.13,
+   "shipping": null,
+   "qty": 5,
+   "bulk": true,
+   "image": "https://static.slickdealscdn.com/attachment/1/1/7/1/5/2/7/300x300/22403328.thumb",
+   "posted": "2026-11-17T18:40:26+00:00"
+  },
+  {
+   "id": "4348efba8a24",
+   "source": "slickdeals",
+   "title": "LEGO Batman Trilogy (PC) $3.99",
+   "url": "https://slickdeals.net/f/20329143-lego-batman-trilogy-pc-3-99?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 3.99,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/2/3/5/6/9/3/9/9/300x300/22404633.thumb",
+   "posted": "2026-11-17T20:19:43+00:00"
+  },
+  {
+   "id": "60187f7593fe",
+   "source": "slickdeals",
+   "title": "220-Piece LEGO Lotus Flowers Building Set $6.49 + Free Shipping w/ Prime or on $35+",
+   "url": "https://slickdeals.net/f/20329809-220-piece-lego-lotus-flowers-building-set-6-49-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 6.49,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/5/5/7/3/6/2/300x300/22406910.thumb",
+   "posted": "2026-11-17T22:33:45+00:00"
+  },
+  {
+   "id": "8d0007b599e8",
+   "source": "slickdeals",
+   "title": "153-Piece LEGO Creator 3-in-1 Wild Animals (Spider, Scorpion, & Snake) Surprising Building Kit  $7.19 + Free Shipping w/ Prime or on $35+",
+   "url": "https://slickdeals.net/f/20331726-153-piece-lego-creator-3-in-1-wild-animals-spider-scorpion-snake-surprising-building-kit-7-19-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 7.19,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/3/5/8/6/2/3/300x300/22412382.thumb",
+   "posted": "2026-11-18T05:14:35+00:00"
+  },
+  {
+   "id": "ceb1dd204de9",
+   "source": "slickdeals",
+   "title": "$22.17 | 3-Pack 407-Piece LEGO Creator: 3 in 1 - Playful Cat (31163, 2025) at Amazon",
+   "url": "https://slickdeals.net/f/20330142-22-17-3-pack-407-piece-lego-creator-3-in-1-playful-cat-31163-2025-at-amazon?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 22.17,
+   "shipping": null,
+   "qty": 3,
+   "bulk": true,
+   "image": "https://static.slickdealscdn.com/attachment/4/2/8/1/6/300x300/22410843.thumb",
+   "posted": "2026-11-17T23:42:21+00:00"
+  },
+  {
+   "id": "02cafe827dc0",
+   "source": "slickdeals",
+   "title": "168-Pc LEGO Seasonal: Christmas Snowman Ornaments $10.29 + Free Shipping w/ Prime or on $35+",
+   "url": "https://slickdeals.net/f/20326536-168-pc-lego-seasonal-christmas-snowman-ornaments-10-29-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 10.29,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/5/5/7/3/6/2/300x300/22396887.thumb",
+   "posted": "2026-11-17T13:03:17+00:00"
+  },
+  {
+   "id": "e383e8ceee80",
+   "source": "slickdeals",
+   "title": "238-Pc LEGO Minecraft The Baby Pig House Building Set $11.99 + Free Shipping w/ Prime or on $35+",
+   "url": "https://slickdeals.net/f/20325936-238-pc-lego-minecraft-the-baby-pig-house-building-set-11-99-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 11.99,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/5/5/7/3/6/2/300x300/22395399.thumb",
+   "posted": "2026-11-17T10:14:07+00:00"
+  },
+  {
+   "id": "81a8276e20cf",
+   "source": "slickdeals",
+   "title": "210-Piece LEGO Fortnite Tomatohead Building Set (77079) $12.59 + Free Shipping w/ Prime or on $35+",
+   "url": "https://slickdeals.net/f/20324664-210-piece-lego-fortnite-tomatohead-building-set-77079-12-59-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 12.59,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/4/8/5/3/3/0/300x300/22392009.thumb",
+   "posted": "2026-11-17T04:42:03+00:00"
+  },
+  {
+   "id": "83dd32bdf378",
+   "source": "slickdeals",
+   "title": "KOHLS Live 11/22 1AM CT 40% off select LEGO at link, earn $15 Kohls Cash on each $50 spend",
+   "url": "https://slickdeals.net/f/20328735-kohls-live-11-22-1am-ct-40-off-select-lego-at-link-earn-15-kohls-cash-on-each-50-spend?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 15.0,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": null,
+   "posted": "2026-11-17T18:48:06+00:00"
+  },
+  {
+   "id": "397768006edb",
+   "source": "slickdeals",
+   "title": "171-Pc LEGO Disney Princess Rapunzel's Mini Tower (43294) $15.99 + Free Shipping w/ Prime or on $35+",
+   "url": "https://slickdeals.net/f/20324667-171-pc-lego-disney-princess-rapunzel-s-mini-tower-43294-15-99-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 15.99,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/4/8/5/3/3/0/300x300/22392039.thumb",
+   "posted": "2026-11-17T04:42:58+00:00"
+  },
+  {
+   "id": "e07050202dac",
+   "source": "slickdeals",
+   "title": "817-Piece LEGO Harry Potter Hogwarts Herbology Plants Building Set (76474) + $17 Walmart Cash $79.95 + Free Shipping",
+   "url": "https://slickdeals.net/f/20324982-817-piece-lego-harry-potter-hogwarts-herbology-plants-building-set-76474-17-walmart-cash-79-95-free-shipping?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 17.0,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/3/5/8/6/2/3/300x300/22392816.thumb",
+   "posted": "2026-11-17T06:09:18+00:00"
+  },
+  {
+   "id": "8e0640db769f",
+   "source": "slickdeals",
+   "title": "$21.49* | 433-Pc LEGO Christmas Table Decoration Building Toy at Amazon",
+   "url": "https://slickdeals.net/f/20326476-21-49-433-pc-lego-christmas-table-decoration-building-toy-at-amazon?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 21.49,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/1/7/1/5/2/7/300x300/22396758.thumb",
+   "posted": "2026-11-17T12:47:40+00:00"
+  },
+  {
+   "id": "74e07ccb3ece",
+   "source": "slickdeals",
+   "title": "$23.99* | 271-Piece LEGO One Piece: Season 2 - Dr. Hiriluk's Hideot Set at Amazon",
+   "url": "https://slickdeals.net/f/20326236-23-99-271-piece-lego-one-piece-season-2-dr-hiriluk-s-hideot-set-at-amazon?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 23.99,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/1/7/1/5/2/7/300x300/22396215.thumb",
+   "posted": "2026-11-17T11:44:20+00:00"
+  },
+  {
+   "id": "cda14f244746",
+   "source": "slickdeals",
+   "title": "329-Pc. LEGO Speed Champions Ferrari 499P Set $23.99 + Free Shipping w/ Prime or on $35+",
+   "url": "https://slickdeals.net/f/20325939-329-pc-lego-speed-champions-ferrari-499p-set-23-99-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 23.99,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/5/5/7/3/6/2/300x300/22395414.thumb",
+   "posted": "2026-11-17T10:15:54+00:00"
+  },
+  {
+   "id": "06421487c4a6",
+   "source": "slickdeals",
+   "title": "$25 Target (11/22-29) LEGO Creator 3 in 1 Space Exploration Telescope 31378",
+   "url": "https://slickdeals.net/f/20329785-25-target-11-22-29-lego-creator-3-in-1-space-exploration-telescope-31378?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 25.0,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/2/8/0/9/4/300x300/22406877.thumb",
+   "posted": "2026-11-17T22:28:44+00:00"
+  },
+  {
+   "id": "d7a9566366a6",
+   "source": "slickdeals",
+   "title": "LEGO Classic Large Creative Brick Box (10698) $33.49 + Free Shipping w/ Prime or on $35+",
+   "url": "https://slickdeals.net/f/20331708-lego-classic-large-creative-brick-box-10698-33-49-free-shipping-w-prime-or-on-35?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 33.49,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/3/5/8/6/2/3/300x300/22412277.thumb",
+   "posted": "2026-11-18T05:11:23+00:00"
+  },
+  {
+   "id": "67f8b6d3c8c3",
+   "source": "slickdeals",
+   "title": "$34.99* | 667-Piece LEGO Creator 3 in 1 Forest Animals Set (Red Fox, Owl & Squirrel) at Amazon",
+   "url": "https://slickdeals.net/f/20326227-34-99-667-piece-lego-creator-3-in-1-forest-animals-set-red-fox-owl-squirrel-at-amazon?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 34.99,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/1/7/1/5/2/7/300x300/22396179.thumb",
+   "posted": "2026-11-17T11:37:45+00:00"
+  },
+  {
+   "id": "0c6e92bed2d8",
+   "source": "slickdeals",
+   "title": "$49.99 Target 11/22-29: LEGO Batman: Legacy of the Dark Knight - Nintendo Switch 2",
+   "url": "https://slickdeals.net/f/20329842-49-99-target-11-22-29-lego-batman-legacy-of-the-dark-knight-nintendo-switch-2?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 49.99,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/2/8/0/9/4/300x300/22407045.thumb",
+   "posted": "2026-11-17T22:40:35+00:00"
+  },
+  {
+   "id": "2e17b9102631",
+   "source": "slickdeals",
+   "title": "LEGO Woodland Mushrooms Building Set 11505 $53.59",
+   "url": "https://slickdeals.net/f/20329527-lego-woodland-mushrooms-building-set-11505-53-59?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 53.59,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/4/2/8/1/6/300x300/22409514.thumb",
+   "posted": "2026-11-17T21:40:17+00:00"
+  },
+  {
+   "id": "31dcd1848809",
+   "source": "slickdeals",
+   "title": "990-Pc LEGO City: Airplane, Service Truck, & Hovercraft Mix & Match Remix $55.95 + Free Shipping",
+   "url": "https://slickdeals.net/f/20325966-990-pc-lego-city-airplane-service-truck-hovercraft-mix-match-remix-55-95-free-shipping?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 55.95,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/5/5/7/3/6/2/300x300/22395456.thumb",
+   "posted": "2026-11-17T10:22:39+00:00"
+  },
+  {
+   "id": "0e5e4d555503",
+   "source": "slickdeals",
+   "title": "516-Piece LEGO Polaroid Camera Building Set $64.00 + Free Shipping",
+   "url": "https://slickdeals.net/f/20325945-516-piece-lego-polaroid-camera-building-set-64-00-free-shipping?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 64.0,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/1/5/5/7/3/6/2/300x300/22395432.thumb",
+   "posted": "2026-11-17T10:17:31+00:00"
+  },
+  {
+   "id": "34d1bf62d397",
+   "source": "slickdeals",
+   "title": "LEGO Harry Potter Diagon Alley Wizarding Shops Collectible Building Set 76444 + more Target Lego Sale",
+   "url": "https://slickdeals.net/f/20325732-lego-harry-potter-diagon-alley-wizarding-shops-collectible-building-set-76444-more-target-lego-sale?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": null,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/3/0/4/6/9/6/300x300/22394823.thumb",
+   "posted": "2026-11-17T09:19:35+00:00"
   }
  ],
  "log": [
   {
    "source": "slickdeals",
-   "item": "Dreamcast",
+   "item": "lego",
    "status": "ok",
-   "msg": "25 results, 2 matched"
-  },
-  {
-   "source": "ebay",
-   "item": "Dreamcast",
-   "status": "skipped",
-   "msg": "no eBay keys (add EBAY_CLIENT_ID and EBAY_CLIENT_SECRET as repo secrets)"
+   "msg": "25 results, 25 matched"
   }
  ]
 }
