@@ -42,6 +42,21 @@ Most bulk lots are on eBay. Get free keys at developer.ebay.com → *Application
 Then in the repository: **Settings → Secrets and variables → Actions → New repository secret**. Add two secrets:
 `EBAY_CLIENT_ID` (the App ID) and `EBAY_CLIENT_SECRET` (the Cert ID).
 
+## More stores (optional, free)
+Every deal and search has a **Compare** button. It opens the same search on Amazon, Walmart, Target, Home Depot,
+Facebook Marketplace, eBay sold listings and PriceCharting. This needs no setup.
+
+To have the app *search* Amazon, Walmart, Target, Home Depot and Facebook Marketplace itself, add a free SerpApi key:
+1. Sign up at serpapi.com. The free plan gives 250 searches a month and needs no credit card.
+2. Copy your API key.
+3. In this repository: Settings → Secrets and variables → Actions → New repository secret.
+   Name it `SERPAPI_KEY` and paste the key.
+4. For Facebook Marketplace, set **Your area** under Profit and area in the app.
+
+Then tick **Stores** or **Facebook Marketplace** in a search's filters. Each source you tick uses 1 free search.
+The app shows how many free searches you have left. If they run out, those sources pause until next month,
+and Slickdeals and eBay keep working.
+
 ---
 
 ## Good to know

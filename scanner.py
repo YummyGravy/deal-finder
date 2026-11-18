@@ -61,6 +61,8 @@ def settings_for(wl):
     s["subreddits"].update((wl.get("settings") or {}).get("subreddits") or {})
     s["ebay_client_id"] = os.environ.get("EBAY_CLIENT_ID", "")
     s["ebay_client_secret"] = os.environ.get("EBAY_CLIENT_SECRET", "")
+    s["serpapi_key"] = os.environ.get("SERPAPI_KEY", "")
+    s["location"] = ((wl.get("settings") or {}).get("location") or "").strip()
     return s
 
 
@@ -104,7 +106,7 @@ def run_item(item, settings, log):
             title = r["title"] + (f"  · {r['suffix']}" if r.get("suffix") else "")
             out.append({
                 "id": hashlib.sha1(r["url"].encode()).hexdigest()[:12],
-                "source": src, "title": title, "url": r["url"],
+                "source": src, "store": r.get("store"), "title": title, "url": r["url"],
                 "price": r["price"], "shipping": r.get("shipping"), "qty": qty,
                 "bulk": core.is_bulk(r["title"], qty), "image": r.get("image"), "posted": r.get("posted"),
             })
@@ -126,7 +128,8 @@ def mode_search():
         "sources": [s.strip() for s in (os.environ.get("SOURCES") or ",".join(core.SOURCES)).split(",") if s.strip()],
     }
     log = []
-    results = run_item(item, settings_for(wl), log) if item["keywords"] else []
+    settings = settings_for(wl)
+    results = run_item(item, settings, log) if item["keywords"] else []
     if not item["keywords"]:
         log.append({"source": "-", "item": "-", "status": "error", "msg": "empty search"})
     seen, uniq = set(), []
@@ -135,7 +138,8 @@ def mode_search():
             seen.add(r["url"]); uniq.append(r)
     uniq.sort(key=lambda r: (r["price"] is None, (r["price"] or 0) / max(1, r["qty"])))
     save(SEARCH, {"query": item["keywords"], "params": {k: item[k] for k in ("category", "max_price", "min_qty", "exclude", "sources")},
-                  "run_at": now(), "run_id": os.environ.get("GITHUB_RUN_ID"), "results": uniq, "log": log})
+                  "run_at": now(), "run_id": os.environ.get("GITHUB_RUN_ID"), "results": uniq, "log": log,
+                  "serpapi_left": core.serpapi_left(settings)})
     print(f"search '{item['keywords']}': {len(uniq)} results")
     for l in log:
         print(f"  [{l['status']}] {l['source']}: {l['msg']}")
@@ -164,7 +168,7 @@ def mode_watchlist():
     deals = [d for d in existing.values() if d["watch_id"] in ids and d.get("last_seen", "") >= cutoff]
     deals.sort(key=lambda d: d.get("first_seen", ""), reverse=True)
     save(DEALS, {"updated": stamp, "run_id": os.environ.get("GITHUB_RUN_ID"), "new": new,
-                 "deals": deals[:MAX_DEALS], "log": log})
+                 "deals": deals[:MAX_DEALS], "log": log, "serpapi_left": core.serpapi_left(settings)})
     print(f"watchlist scan: {new} new deals, {len(deals)} kept")
     for l in log:
         print(f"  [{l['status']}] {l['source']:<10} {l['item']}: {l['msg']}")

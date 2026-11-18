@@ -48,6 +48,8 @@ DEFAULT_SETTINGS = {
     "ntfy_topic": "",              # pick something unguessable, e.g. dealfinder-7f3k29
     "ebay_client_id": "",
     "ebay_client_secret": "",
+    "serpapi_key": "",             # optional free key from serpapi.com: Amazon/Walmart/Target/Home Depot + Facebook Marketplace
+    "location": "",                # "City, State" for Facebook Marketplace searches
     "subreddits": {
         "Electronics": "buildapcsales",
         "Retro games": "gamesale",
@@ -266,6 +268,47 @@ def http_post(url, data, headers=None, timeout=20):
 
 
 # --------------------------------------------------------------------------- sources
+STORES = ["Amazon", "Walmart", "Target", "Home Depot", "Best Buy", "Costco", "Sam's Club", "Lowe's", "Kohl's", "GameStop",
+          "Newegg", "Woot", "eBay", "Macy's", "LEGO", "Dell", "Staples", "Office Depot", "Microsoft", "Nintendo", "Meijer",
+          "Big Lots", "Five Below", "Ollie's", "B&H", "Adorama", "Lenovo", "HP", "Samsung", "Apple", "Kroger", "Dick's",
+          "Academy", "Wayfair", "Ulta", "Sephora", "JCPenney", "Belk", "Barnes & Noble", "AliExpress", "Temu", "Wish"]
+BRANDS = {"LEGO", "Nintendo", "Microsoft", "Samsung", "Apple", "Dell", "HP", "Lenovo"}  # also brands: only count after "at"/"from"
+def _store_rx(st):
+    return re.escape(st).replace("'", "['’]?").replace("\\ ", r"\s+") + r"(?:\.com)?"
+_ANY = "|".join(_store_rx(st) for st in sorted(STORES, key=len, reverse=True))
+_AT_RE = re.compile(r"(?:\bat|\bfrom|\bvia|@|[-–|(])\s*(?:the\s+)?(" + _ANY + r")\b", re.I)
+_STORE_RE = [(st, re.compile(r"\b" + _store_rx(st) + r"\b", re.I)) for st in STORES]
+
+
+def _canon(name):
+    n = re.sub(r"\.com$", "", name.strip(), flags=re.I).replace("’", "'").lower()
+    for st in STORES:
+        if re.sub(r"['\s]", "", st.lower()) == re.sub(r"['\s]", "", n):
+            return st
+    return None
+
+
+def detect_store(title, desc=""):
+    """Find the retailer: '... at Walmart' style in the title first, then the description's opening, then any non-brand store name."""
+    title = html.unescape(title or "")
+    desc = re.sub(r"<[^>]+>", " ", html.unescape(desc or ""))[:400]
+    for t in (title, desc):
+        m = _AT_RE.search(t)
+        if m and _canon(m.group(1)):
+            return _canon(m.group(1))
+    for t in (desc, title):
+        best = None
+        for st, rx in _STORE_RE:
+            if t is title and st in BRANDS:
+                continue
+            m = rx.search(t)
+            if m and (best is None or m.start() < best[1]):
+                best = (st, m.start())
+        if best:
+            return best[0]
+    return None
+
+
 def src_slickdeals(watch, settings):
     q = urllib.parse.quote_plus(watch["keywords"])
     url = f"https://slickdeals.net/newsearch.php?q={q}&searcharea=deals&searchin=first&rss=1"
@@ -278,6 +321,7 @@ def src_slickdeals(watch, settings):
         img = IMG_RE.search(content + desc)
         out.append({
             "title": title,
+            "store": detect_store(title, desc + " " + content),
             "url": (item.findtext("link") or "").strip(),
             "price": parse_price(title),
             "shipping": None,
@@ -356,7 +400,7 @@ def src_ebay(watch, settings):
                 break
         cond = it.get("condition")
         out.append({
-            "title": it.get("title", ""), "suffix": cond,
+            "title": it.get("title", ""), "suffix": cond, "store": "eBay",
             "url": it.get("itemWebUrl", ""),
             "price": float(price) if price is not None else None,
             "shipping": ship,
@@ -370,7 +414,83 @@ class SkipSource(Exception):
     pass
 
 
-SOURCE_FUNCS = {"slickdeals": src_slickdeals, "reddit": src_reddit, "ebay": src_ebay}
+SERPAPI = "https://serpapi.com/search.json"
+
+
+def serpapi_get(params, settings):
+    if not settings.get("serpapi_key"):
+        raise SkipSource("no SerpApi key (free at serpapi.com; add SERPAPI_KEY as a repo secret)")
+    q = urllib.parse.urlencode({**params, "api_key": settings["serpapi_key"]})
+    try:
+        data = json.loads(http_get(f"{SERPAPI}?{q}", timeout=40))
+    except urllib.error.HTTPError as e:
+        try:
+            msg = json.loads(e.read() or b"{}").get("error", "")
+        except Exception:
+            msg = ""
+        raise RuntimeError(f"SerpApi HTTP {e.code}: {msg or e.reason}")
+    if data.get("error") and not data.get("search_metadata", {}).get("status") == "Success":
+        if "hasn't returned any results" in data["error"]:
+            return data
+        raise RuntimeError("SerpApi: " + data["error"])
+    return data
+
+
+def serpapi_left(settings):
+    """Searches left this month (the account endpoint doesn't use a search)."""
+    if not settings.get("serpapi_key"):
+        return None
+    try:
+        a = json.loads(http_get("https://serpapi.com/account.json?" + urllib.parse.urlencode({"api_key": settings["serpapi_key"]})))
+        return a.get("total_searches_left", a.get("plan_searches_left"))
+    except Exception:
+        return None
+
+
+def src_shopping(watch, settings):
+    """Google Shopping through SerpApi: one search covers Amazon, Walmart, Target, Home Depot, Best Buy and more."""
+    params = {"engine": "google_shopping", "q": watch["keywords"], "gl": "us", "hl": "en"}
+    data = serpapi_get(params, settings)
+    out = []
+    for it in data.get("shopping_results", []) or []:
+        price = it.get("extracted_price")
+        out.append({
+            "title": it.get("title", ""),
+            "store": _canon(it.get("source") or "") or (it.get("source") or "").replace(".com", "") or None,
+            "url": it.get("link") or it.get("product_link") or "",
+            "price": float(price) if isinstance(price, (int, float)) else parse_price(it.get("price", "")),
+            "shipping": 0.0 if "free" in str(it.get("delivery", "")).lower() else None,
+            "image": it.get("thumbnail"),
+            "posted": None,
+            "suffix": it.get("second_hand_condition"),
+        })
+    return out
+
+
+def src_marketplace(watch, settings):
+    """Facebook Marketplace through SerpApi (needs your area)."""
+    if not settings.get("location"):
+        raise SkipSource("set your area in Settings for Facebook Marketplace")
+    data = serpapi_get({"engine": "facebook_marketplace", "q": watch["keywords"], "location": settings["location"]}, settings)
+    items = data.get("organic_results") or []
+    out = []
+    for it in items:
+        price = it.get("extracted_price")
+        out.append({
+            "title": it.get("title", ""),
+            "store": "Facebook Marketplace",
+            "url": it.get("link", ""),
+            "price": float(price) if isinstance(price, (int, float)) else parse_price(str(it.get("price", ""))),
+            "shipping": None,
+            "image": it.get("thumbnail"),
+            "posted": None,
+            "suffix": it.get("location"),
+        })
+    return out
+
+
+SOURCE_FUNCS = {"slickdeals": src_slickdeals, "reddit": src_reddit, "ebay": src_ebay,
+                "shopping": src_shopping, "marketplace": src_marketplace}
 
 
 # --------------------------------------------------------------------------- alerts

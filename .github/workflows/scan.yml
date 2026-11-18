@@ -62,6 +62,7 @@ jobs:
           SOURCES: ${{ inputs.sources }}
           EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
           EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: python scanner.py
 
       - name: Save results
