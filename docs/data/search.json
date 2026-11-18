@@ -1,23 +1,55 @@
 {
- "query": "ssd",
+ "query": "Dreamcast",
  "params": {
-  "category": "Electronics",
+  "category": "Retro games",
   "max_price": "",
   "min_qty": "1",
   "exclude": "",
   "sources": [
-   "reddit"
+   "slickdeals",
+   "ebay"
   ]
  },
- "run_at": "2026-11-18T05:12:15+00:00",
- "run_id": "44242570742",
- "results": [],
+ "run_at": "2026-11-18T05:48:59+00:00",
+ "run_id": "44246842467",
+ "results": [
+  {
+   "id": "3f2b6094cc4c",
+   "source": "slickdeals",
+   "title": "Anbernic RG Vita Retro Game Emulation Handheld - $68 + FS @ AliExpress (up to PSP, N64 & Dreamcast)",
+   "url": "https://slickdeals.net/f/19926432-anbernic-rg-vita-retro-game-emulation-handheld-68-fs-aliexpress-up-to-psp-n64-dreamcast?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 68.0,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/2/5/1/6/8/8/6/300x300/21394317.thumb",
+   "posted": "2026-08-26T04:43:56+00:00"
+  },
+  {
+   "id": "60d8e4b6b2f9",
+   "source": "slickdeals",
+   "title": "Anbernic RG Vita Retro Game Emulation Handheld - $70.10 + FS @ AliExpress (up to PSP, N64 & Dreamcast)",
+   "url": "https://slickdeals.net/f/20292840-anbernic-rg-vita-retro-game-emulation-handheld-70-10-fs-aliexpress-up-to-psp-n64-dreamcast?utm_source=rss&utm_content=def&utm_medium=RSS2",
+   "price": 70.1,
+   "shipping": null,
+   "qty": 1,
+   "bulk": false,
+   "image": "https://static.slickdealscdn.com/attachment/2/5/1/6/8/8/6/300x300/22306884.thumb",
+   "posted": "2026-11-11T20:32:02+00:00"
+  }
+ ],
  "log": [
   {
-   "source": "reddit",
-   "item": "ssd",
-   "status": "error",
-   "msg": "HTTP 404"
+   "source": "slickdeals",
+   "item": "Dreamcast",
+   "status": "ok",
+   "msg": "25 results, 2 matched"
+  },
+  {
+   "source": "ebay",
+   "item": "Dreamcast",
+   "status": "skipped",
+   "msg": "no eBay keys (add EBAY_CLIENT_ID and EBAY_CLIENT_SECRET as repo secrets)"
   }
  ]
 }
