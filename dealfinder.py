@@ -278,6 +278,7 @@ def _store_rx(st):
 _ANY = "|".join(_store_rx(st) for st in sorted(STORES, key=len, reverse=True))
 _AT_RE = re.compile(r"(?:\bat|\bfrom|\bvia|@|[-–|(])\s*(?:the\s+)?(" + _ANY + r")\b", re.I)
 _STORE_RE = [(st, re.compile(r"\b" + _store_rx(st) + r"\b", re.I)) for st in STORES]
+_HAS_RE = re.compile(r"\b(" + _ANY + r")\s+(?:has|is offering|offers|is having|now has|is selling|currently has)\b", re.I)
 
 
 def _canon(name):
@@ -293,13 +294,14 @@ def detect_store(title, desc=""):
     title = html.unescape(title or "")
     desc = re.sub(r"<[^>]+>", " ", html.unescape(desc or ""))[:400]
     for t in (title, desc):
-        m = _AT_RE.search(t)
-        if m and _canon(m.group(1)):
-            return _canon(m.group(1))
+        for rx in (_AT_RE, _HAS_RE):
+            m = rx.search(t)
+            if m and _canon(m.group(1)):
+                return _canon(m.group(1))
     for t in (desc, title):
         best = None
         for st, rx in _STORE_RE:
-            if t is title and st in BRANDS:
+            if st in BRANDS:
                 continue
             m = rx.search(t)
             if m and (best is None or m.start() < best[1]):
