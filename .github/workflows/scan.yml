@@ -1,0 +1,78 @@
+name: scan
+run-name: "${{ inputs.mode == 'search' && format('Search: {0}', inputs.query) || 'Watchlist scan' }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "search = one-off search, watchlist = scan saved items"
+        type: choice
+        options: [watchlist, search]
+        default: watchlist
+      query:
+        description: "What to search for (search mode)"
+        type: string
+        default: ""
+      category:
+        type: string
+        default: "Electronics"
+      max_price:
+        type: string
+        default: ""
+      min_qty:
+        type: string
+        default: "1"
+      exclude:
+        type: string
+        default: ""
+      sources:
+        type: string
+        default: "slickdeals,reddit,ebay"
+  # Optional automatic scan of your watchlist. Remove the # on the next two lines to turn it on
+  # (times are UTC; 12:00 UTC = 7am New York in winter).
+  # schedule:
+  #   - cron: "0 12 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deal-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Scan
+        env:
+          MODE: ${{ inputs.mode || 'watchlist' }}
+          QUERY: ${{ inputs.query }}
+          CATEGORY: ${{ inputs.category }}
+          MAX_PRICE: ${{ inputs.max_price }}
+          MIN_QTY: ${{ inputs.min_qty }}
+          EXCLUDE: ${{ inputs.exclude }}
+          SOURCES: ${{ inputs.sources }}
+          EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
+          EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
+        run: python scanner.py
+
+      - name: Save results
+        run: |
+          git config user.name "deal-finder-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/data
+          if git diff --cached --quiet; then echo "nothing new"; exit 0; fi
+          git commit -q -m "Update deal data"
+          for i in 1 2 3 4 5; do
+            git pull -q --rebase && git push -q && exit 0
+            sleep $((i * 3))
+          done
+          exit 1

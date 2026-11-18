@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#15121d">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg">
+<title>Deal Finder</title>
+<script>
+/* [id, name, bg, panel, panel2, line, text, mute, accent, text-on-accent, accent2, good, bad, stripe(4 colors)] */
+const THEMES=[
+ ["retro","Retro Console","#15121d","#1e1a2a","#282338","#3a3350","#eeebf6","#9d96b3","#f47a24","#1c0c00","#9b8fe6","#3fbf6a","#e5484d",["#e5484d","#f5c518","#3fbf6a","#3b7ddd"]],
+ ["swirl","Blue Swirl","#0f141c","#161e2b","#1e2838","#2c3a50","#e9eef6","#8fa0b8","#2f8cff","#04122a","#f47a24","#36c27a","#ef5a5a",null],
+ ["grape","Grape Cartridge","#140f1c","#1d1529","#271d37","#3a2b52","#efe8fa","#a596bf","#a678ff","#160a2a","#ff7ac6","#4cd18a","#ff6b6b",null],
+ ["midnight","Midnight Amber","#0f1115","#171a21","#1e222b","#2a2f3a","#e8eaef","#8b93a4","#ffb020","#1a1200","#7fb3ff","#2ecc71","#ff5c5c",null],
+ ["arcade","Arcade Neon","#0b0b14","#131325","#1b1b33","#2b2b4d","#f2f0ff","#9a97c2","#ff2e88","#1a0010","#22e0ff","#39ff9f","#ff5470",null],
+ ["handheld","Handheld Green","#0f160f","#162016","#1e2b1d","#2d3f2b","#e2f0d9","#91a888","#9bbc0f","#0f1a00","#c4cf8a","#7fd36a","#e86a5a",["#0f380f","#306230","#8bac0f","#9bbc0f"]],
+ ["visor","Red Visor","#120808","#1c0d0d","#261212","#3d1c1c","#f6e6e6","#b08f8f","#ff2a2a","#1a0000","#ff8a5c","#58d68d","#ff6b6b",null],
+ ["ocean","Deep Ocean","#08131a","#0e1d27","#142733","#20394a","#e4f2f8","#88a6b5","#18c3c3","#00191a","#4d9dff","#3fd18f","#ff6b6b",null],
+ ["forest","Forest Night","#0d130f","#141d17","#1b2820","#293b2f","#e6f0e8","#8fa596","#5cc46b","#04150a","#d9b44a","#5cc46b","#e5674f",null],
+ ["sunset","Sunset Drive","#160e14","#21141d","#2c1a27","#45283c","#f8e9f0","#b293a5","#ff8c42","#200c00","#ff4f8b","#4fd18b","#ff4f4f",null],
+ ["synth","Synthwave","#110b1f","#1a102d","#24163d","#3a2560","#f5ecff","#a593c9","#ff3cac","#1d0014","#2bd2ff","#3cffb0","#ff5c7a",["#ff3cac","#b44cff","#784ba0","#2bd2ff"]],
+ ["nightshade","Nightshade","#16151f","#1f1e2b","#292838","#3b3a50","#f1f0f8","#9e9cb8","#bd93f9","#160d29","#ff79c6","#50fa7b","#ff5555",null],
+ ["fjord","Fjord","#161a21","#1e232c","#262c37","#363e4d","#e5e9f0","#97a1b3","#88c0d0","#0d1a1f","#b48ead","#a3be8c","#bf616a",null],
+ ["solar","Solar Dark","#06222b","#0b2c36","#113642","#1e4a57","#eaf0ec","#8ea4a6","#e0a800","#1a1300","#2aa1d6","#93a800","#e0443e",null],
+ ["crimson","Crimson Gold","#140b0e","#1e1015","#29161d","#42222e","#f7ecee","#b3959c","#e8b84a","#1a1000","#d7334e","#59c27a","#e8504d",null],
+ ["mint","Mint Chip","#0e1513","#141e1b","#1b2824","#293c36","#e7f5f0","#8ea9a0","#3ddc97","#00160d","#7cc4ff","#3ddc97","#ff6b6b",null],
+ ["coffee","Espresso","#14100d","#1d1713","#271f19","#3b3027","#f3ebe3","#a8998a","#d49a5b","#1a0d00","#e8d3b0","#7bbf6a","#e0604f",null],
+ ["slate","Slate","#121417","#1a1d21","#22262b","#323840","#e9ecef","#959ca6","#7aa2f7","#0b1530","#c0caf5","#73daca","#f7768e",null],
+ ["gold","Gold Cartridge","#0d0c0a","#171511","#211e18","#353026","#f5f0e2","#a8a08b","#d4af37","#171000","#f0e1a0","#7bc96f","#e05a4f",null],
+ ["mono","Monochrome","#0e0e0e","#171717","#1f1f1f","#303030","#f0f0f0","#9a9a9a","#f0f0f0","#111111","#bdbdbd","#9be09b","#f08a8a",["#f0f0f0","#bdbdbd","#7a7a7a","#3a3a3a"]],
+ ["contrast","High Contrast","#000000","#0b0b0b","#151515","#5a5a5a","#ffffff","#cfcfcf","#ffe600","#000000","#00e5ff","#00ff7f","#ff4d4d",null],
+];
+function applyTheme(id){
+  const t=THEMES.find(x=>x[0]===id)||THEMES[0];
+  const [ ,name,bg,panel,panel2,line,text,mute,acc,accText,acc2,good,bad,stripe]=t;
+  const st=stripe||[acc,acc2,good,bad], r=document.documentElement.style;
+  Object.entries({bg,panel,panel2,line,text,mute,acc,accText,acc2,good,bad,chip:panel2,s1:st[0],s2:st[1],s3:st[2],s4:st[3]})
+    .forEach(([k,v])=>r.setProperty("--"+k,v));
+  const m=document.querySelector('meta[name=theme-color]'); if(m)m.content=bg;
+  return t;
+}
+let THEME_ID=(()=>{try{return JSON.parse(localStorage.getItem("df_theme"))||"retro"}catch(e){return "retro"}})();
+applyTheme(THEME_ID);
+</script>
+<style>
+:root{--bg:#0f1115;--panel:#171a21;--panel2:#1e222b;--line:#2a2f3a;--text:#e8eaef;--mute:#8b93a4;
+--acc:#ffb020;--accText:#1a1200;--acc2:#7fb3ff;--good:#2ecc71;--bad:#ff5c5c;--chip:#252a35;--r:14px;--s1:#e5484d;--s2:#f5c518;--s3:#3fbf6a;--s4:#3b7ddd}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);
+font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{background:radial-gradient(900px 520px at 105% -8%,color-mix(in srgb,var(--acc2) 16%,transparent),transparent 62%),radial-gradient(700px 480px at -10% 110%,color-mix(in srgb,var(--acc) 10%,transparent),transparent 60%),var(--bg);background-attachment:fixed;min-height:100vh}
+input:focus,select:focus{outline:2px solid color-mix(in srgb,var(--acc2) 70%,transparent);outline-offset:1px}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--acc)}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px)}
+header::after{content:"";display:block;height:3px;background:linear-gradient(90deg,var(--s1) 0 25%,var(--s2) 25% 50%,var(--s3) 50% 75%,var(--s4) 75%)}
+.top{display:flex;align-items:center;gap:10px;padding:10px 14px}
+.logo{font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px;letter-spacing:.2px}.logo b{color:var(--acc)}
+.pad{display:grid;grid-template-columns:repeat(3,6px);grid-template-rows:repeat(3,6px);gap:1px}.pad i{border-radius:50%}
+.pad i:nth-child(2){background:var(--s2)}.pad i:nth-child(4){background:var(--s3)}.pad i:nth-child(6){background:var(--s1)}.pad i:nth-child(8){background:var(--s4)}
+.iconbtn{background:none;border:1px solid var(--line);border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:18px;flex:none}
+.sub{color:var(--mute);font-size:12px;flex:1;min-width:0;line-height:1.3}
+nav{display:flex;padding:0 8px}
+nav button{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:10px 4px;color:var(--mute);cursor:pointer;font-weight:600}
+nav button.on{color:var(--text);border-color:var(--acc)}
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.sw{border-radius:12px;padding:10px;cursor:pointer;border:2px solid transparent;text-align:left;font-size:13px;font-weight:600}
+.sw.on{border-color:var(--acc)}
+.sw .bars{display:flex;gap:3px;margin:8px 0 6px}.sw .bars i{flex:1;height:8px;border-radius:3px}
+.sw .mini{display:flex;gap:4px;align-items:center}.sw .mini b{border-radius:6px;padding:2px 6px;font-size:11px}
+main{padding:12px 14px 60px;max-width:1100px;margin:0 auto}
+.view{display:none}.view.on{display:block}
+.btn{background:var(--chip);border:1px solid var(--line);border-radius:10px;padding:9px 14px;cursor:pointer;text-decoration:none;color:var(--text);display:inline-block}
+.btn.pri{background:var(--acc);color:var(--accText);border-color:var(--acc);font-weight:700;box-shadow:0 2px 0 color-mix(in srgb,var(--acc) 55%,#000)}
+.btn.small{padding:5px 10px;font-size:13px}.btn.danger{color:var(--bad)}.btn:disabled{opacity:.5}
+input,select{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 10px;width:100%}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.grid{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+@media (min-width:700px){.grid.g4{grid-template-columns:repeat(4,1fr)}}
+.field{display:flex;flex-direction:column;gap:4px}.field>span{font-size:12px;color:var(--mute)}
+.hint{font-size:12px;color:var(--mute)}
+.bigsearch{display:flex;gap:8px;margin-bottom:10px}
+.bigsearch input{font-size:17px;padding:12px}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+.chip{flex:none;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+.chip.on{background:var(--acc);color:var(--accText);border-color:var(--acc);font-weight:700}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.spacer{flex:1}
+label.tog{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--mute);white-space:nowrap}
+label.tog input{width:auto}
+details summary{cursor:pointer;color:var(--mute);font-size:13px;margin:4px 0}
+.list{display:grid;gap:10px;grid-template-columns:1fr;margin-top:10px}
+@media (min-width:900px){.list{grid-template-columns:1fr 1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px;display:grid;grid-template-columns:72px 1fr;gap:10px}
+.thumb{width:72px;height:72px;border-radius:10px;background:var(--panel2) center/cover no-repeat;display:flex;align-items:center;justify-content:center;font-size:22px;text-decoration:none}
+.ttl{font-weight:600;font-size:14px;color:var(--text);text-decoration:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;align-items:center;font-size:12px;color:var(--mute)}
+.price{font-size:18px;font-weight:800;color:var(--text)}
+.tag{background:var(--chip);border-radius:6px;padding:2px 7px}
+.tag.ebay{color:var(--acc2)}.tag.slickdeals{color:var(--acc)}.tag.reddit{color:var(--bad)}
+.tag.bulk{background:color-mix(in srgb,var(--acc) 18%,transparent);color:var(--acc);font-weight:700}.tag.new{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good);font-weight:700}
+.profit{font-weight:800;border-radius:8px;padding:2px 8px;font-size:13px}
+.profit.pos{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}.profit.neg{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.acts{display:flex;gap:6px;margin-top:8px}
+.status{border-radius:12px;padding:12px;margin:10px 0;background:var(--panel2);border:1px solid var(--line);display:none}
+.status.on{display:block}
+.status .bar{height:4px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:8px}
+.status .bar i{display:block;height:100%;width:30%;background:var(--acc);animation:slide 1.2s infinite ease-in-out}
+@keyframes slide{0%{margin-left:-30%}100%{margin-left:100%}}
+.status.err{border-color:var(--bad)}.status.err .bar{display:none}
+.empty{color:var(--mute);text-align:center;padding:30px 10px}
+.witem{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center}
+.witem .n{font-weight:700}.witem .s{font-size:12px;color:var(--mute)}
+.witem.off{opacity:.5}
+.log{font:12px ui-monospace,monospace;color:var(--mute);margin-top:8px}
+.log .error{color:var(--bad)}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:18px;padding:16px;width:min(520px,94vw)}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--line);padding:10px 16px;border-radius:12px;opacity:0;transition:.25s;pointer-events:none;z-index:20;max-width:90vw}
+.toast.on{opacity:1}
+.banner{background:color-mix(in srgb,var(--acc) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--acc) 45%,var(--line));color:var(--text);border-radius:12px;padding:12px;margin-bottom:12px;font-size:14px}
+</style></head><body>
+<header>
+  <div class="top"><div class="logo"><span class="pad" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span>Deal<b>Finder</b></span></div><div class="sub" id="sub"></div><button class="iconbtn" title="Color scheme" onclick="openThemes()">🎨</button></div>
+  <nav>
+    <button class="on" data-v="search">Search</button>
+    <button data-v="deals">Deals</button>
+    <button data-v="watch">Watchlist</button>
+    <button data-v="setup">Setup</button>
+  </nav>
+</header>
+<main>
+  <div class="banner" id="needSetup" style="display:none">One step left: open <b>Setup</b> and paste your GitHub token so searches can run.</div>
+
+  <!-- SEARCH -->
+  <section class="view on" id="v-search">
+    <form class="bigsearch" onsubmit="event.preventDefault();doSearch()">
+      <input id="q" type="search" placeholder="Search for anything… e.g. gamecube controller lot" enterkeyhint="search">
+      <button class="btn pri" id="goBtn">Search</button>
+    </form>
+    <div class="chips" id="qcat"></div>
+    <details style="margin-top:6px"><summary>Price, quantity &amp; filters</summary>
+      <div class="grid g4" style="margin-top:8px">
+        <label class="field"><span>Max total price $</span><input id="qmax" type="number" inputmode="decimal"></label>
+        <label class="field"><span>Min quantity</span><input id="qqty" type="number" inputmode="numeric" value="1"></label>
+        <label class="field"><span>Resells for $ / unit</span><input id="qresale" type="number" inputmode="decimal" placeholder="for profit"></label>
+        <label class="field"><span>Skip words</span><input id="qex" placeholder="repro, broken"></label>
+      </div>
+      <div class="row" style="margin-top:8px" id="qsrc"></div>
+    </details>
+    <div class="status" id="sstat"><div id="sstatText"></div><div class="bar"><i></i></div></div>
+    <div class="row" style="margin-top:10px" id="resHead"></div>
+    <div class="list" id="results"></div>
+  </section>
+
+  <!-- DEALS -->
+  <section class="view" id="v-deals">
+    <div class="row"><div class="chips" id="dcat" style="flex:1"></div></div>
+    <div class="row" style="margin:8px 0">
+      <select id="dsort" style="width:auto"><option value="new">Newest</option><option value="profit">Best profit</option><option value="unit">Lowest unit price</option><option value="price">Lowest price</option></select>
+      <label class="tog"><input type="checkbox" id="dbulk"> Bulk only</label>
+      <span class="spacer"></span>
+      <button class="btn pri small" id="scanBtn" onclick="scanWatchlist()">Scan watchlist</button>
+    </div>
+    <div class="status" id="dstat"><div id="dstatText"></div><div class="bar"><i></i></div></div>
+    <div class="list" id="deals"></div>
+    <details style="margin-top:14px"><summary>Last scan log</summary><div class="log" id="dlog"></div></details>
+  </section>
+
+  <!-- WATCHLIST -->
+  <section class="view" id="v-watch">
+    <p class="hint">Saved searches. "Scan watchlist" on the Deals tab checks all of them at once.</p>
+    <div class="list" id="wlist" style="grid-template-columns:1fr"></div>
+    <button class="btn" style="width:100%;margin-top:10px" onclick="editItem()">+ Add item</button>
+  </section>
+
+  <!-- SETUP -->
+  <section class="view" id="v-setup">
+    <div class="panel" id="themePanel">
+      <h3 style="margin-top:0">Color scheme</h3>
+      <div class="themes" id="themes"></div>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Connect to your GitHub</h3>
+      <div class="grid">
+        <label class="field"><span>GitHub username</span><input id="cOwner" autocapitalize="off" autocorrect="off"></label>
+        <label class="field"><span>Repository name</span><input id="cRepo" autocapitalize="off" autocorrect="off"></label>
+      </div>
+      <label class="field" style="margin-top:10px"><span>Access token (stays on this phone only)</span><input id="cToken" type="password" autocapitalize="off" placeholder="github_pat_…"></label>
+      <div class="row" style="margin-top:10px"><button class="btn pri" onclick="saveConn()">Save &amp; test</button><button class="btn danger" onclick="forget()">Forget token</button></div>
+      <p class="hint" id="connMsg"></p>
+    </div>
+    <div class="panel">
+      <h3 style="margin-top:0">Profit &amp; sources</h3>
+      <label class="field"><span>Resale fee % (taken off resale value; eBay ≈ 13%)</span><input id="sFee" type="number" inputmode="decimal"></label>
+      <p class="hint" style="margin-top:12px">Subreddits searched per category (comma-separated):</p>
+      <div id="subs" class="grid" style="grid-template-columns:1fr"></div>
+      <button class="btn pri" style="margin-top:10px" onclick="saveSettings()">Save</button>
+      <p class="hint">eBay results need free API keys saved as repo secrets — see the setup guide.</p>
+    </div>
+  </section>
+</main>
+
+<dialog id="dlg"><form method="dialog" onsubmit="return false">
+  <h3 id="dlgT" style="margin-top:0">Watch item</h3>
+  <div class="grid" style="grid-template-columns:1fr">
+    <label class="field"><span>Name</span><input id="eName"></label>
+    <label class="field"><span>Keywords (all must be in the title)</span><input id="eKw"></label>
+  </div>
+  <div class="grid" style="margin-top:10px">
+    <label class="field"><span>Category</span><select id="eCat"></select></label>
+    <label class="field"><span>Min quantity</span><input id="eQty" type="number"></label>
+    <label class="field"><span>Max total price $</span><input id="eMax" type="number"></label>
+    <label class="field"><span>Resells for $ / unit</span><input id="eRes" type="number"></label>
+  </div>
+  <label class="field" style="margin-top:10px"><span>Skip words</span><input id="eEx"></label>
+  <div class="row" style="margin-top:10px" id="eSrc"></div>
+  <label class="tog" style="margin-top:8px"><input type="checkbox" id="eOn"> Active</label>
+  <div class="row" style="margin-top:14px">
+    <button class="btn danger" id="eDel" type="button" onclick="delItem()">Delete</button><span class="spacer"></span>
+    <button class="btn" type="button" onclick="dlg.close()">Cancel</button>
+    <button class="btn pri" type="button" onclick="saveItem()">Save</button>
+  </div>
+</form></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+const CATS=["Electronics","Retro games","Toys"], SRCS=["slickdeals","reddit","ebay"];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=v=>v==null?"":"$"+Number(v).toFixed(2);
+const LS={get(k,d){try{const v=localStorage.getItem("df_"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+          set(k,v){try{localStorage.setItem("df_"+k,JSON.stringify(v))}catch(e){}}};
+let conn=LS.get("conn",{}), branch=null, WL={settings:{fee_percent:13.25,subreddits:{}},items:[]}, wlSha=null,
+    DEALS={deals:[]}, SEARCHD={results:[]}, qCat=CATS[0], qSrc=[...SRCS], dCat="", editing=null, busy=false;
+let hidden=new Set(LS.get("hidden",[]));
+
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("on"),2600)}
+function ago(iso){if(!iso)return"";const s=(Date.now()-new Date(iso))/1000;if(s<90)return"just now";if(s<3600)return Math.round(s/60)+"m ago";if(s<86400)return Math.round(s/3600)+"h ago";return Math.round(s/86400)+"d ago"}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+function show(v){document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  document.querySelectorAll(".view").forEach(x=>x.classList.toggle("on",x.id==="v-"+v));}
+
+// ---------- GitHub API ----------
+function guessRepo(){const m=location.hostname.match(/^([^.]+)\.github\.io$/);
+  if(m&&!conn.owner){conn.owner=m[1];conn.repo=location.pathname.split("/").filter(Boolean)[0]||"";}}
+const ready=()=>conn.owner&&conn.repo&&conn.token;
+async function gh(path,opt={}){
+  const r=await fetch("https://api.github.com/repos/"+conn.owner+"/"+conn.repo+path,{...opt,headers:{
+    "Authorization":"Bearer "+conn.token,"Accept":opt.raw?"application/vnd.github.raw+json":"application/vnd.github+json",
+    "X-GitHub-Api-Version":"2022-11-28",...(opt.body?{"Content-Type":"application/json"}:{})},cache:"no-store"});
+  if(!r.ok){let m=r.status+"";try{m+=": "+(await r.json()).message}catch(e){}
+    if(r.status===401)m="Token rejected (401) — check it in Setup";
+    if(r.status===403||r.status===404)m+=" — the token may be missing Actions or Contents permission";
+    throw new Error(m);}
+  return r.status===204?null:(opt.raw?r.text():r.json());
+}
+async function getBranch(){if(!branch){branch=(await gh("")).default_branch}return branch}
+const b64e=s=>btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+const b64d=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")),c=>c.charCodeAt(0)));
+async function readJSON(name){
+  if(ready()){await getBranch();return JSON.parse(await gh(`/contents/docs/data/${name}?ref=${branch}&t=${Date.now()}`,{raw:true}))}
+  const r=await fetch(`data/${name}?t=${Date.now()}`,{cache:"no-store"});return r.json();
+}
+async function loadWL(){
+  if(ready()){await getBranch();const f=await gh(`/contents/docs/data/watchlist.json?ref=${branch}&t=${Date.now()}`);wlSha=f.sha;WL=JSON.parse(b64d(f.content));}
+  else WL=await readJSON("watchlist.json");
+  WL.settings=WL.settings||{};WL.settings.subreddits=WL.settings.subreddits||{};WL.items=WL.items||[];
+}
+async function saveWL(msg){
+  if(!ready()){toast("Connect GitHub in Setup first");show("setup");throw new Error("not connected")}
+  await getBranch();
+  const body={message:msg,content:b64e(JSON.stringify(WL,null,1)+"\n"),sha:wlSha,branch};
+  try{wlSha=(await gh("/contents/docs/data/watchlist.json",{method:"PUT",body:JSON.stringify(body)})).content.sha}
+  catch(e){ if(String(e.message).startsWith("409")){const mine=WL;await loadWL();WL=mine;return saveWL(msg)} throw e;}
+}
+// Run the workflow and wait for it to finish. onStep(text) gets progress updates.
+async function runScan(inputs,onStep){
+  await getBranch();
+  const t0=Date.now();
+  await gh("/actions/workflows/scan.yml/dispatches",{method:"POST",body:JSON.stringify({ref:branch,inputs})});
+  onStep("Starting on GitHub…");
+  let run=null;
+  for(let i=0;i<40&&!run;i++){await sleep(3000);
+    const r=await gh(`/actions/workflows/scan.yml/runs?event=workflow_dispatch&per_page=10&t=${Date.now()}`);
+    run=r.workflow_runs.find(x=>new Date(x.created_at).getTime()>=t0-15000);}
+  if(!run)throw new Error("GitHub didn't start the run. Check Actions are enabled on the repo.");
+  for(let i=0;i<120;i++){
+    const r=await gh(`/actions/runs/${run.id}?t=${Date.now()}`);
+    const secs=Math.round((Date.now()-t0)/1000);
+    if(r.status==="completed"){
+      if(r.conclusion!=="success")throw Object.assign(new Error(`Run ${r.conclusion}.`),{url:r.html_url});
+      onStep("Loading results…");return r;}
+    onStep((r.status==="queued"?"Waiting for a GitHub server…":"Searching the deal sites…")+` (${secs}s)`);
+    await sleep(4000);
+  }
+  throw new Error("Timed out waiting for GitHub.");
+}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function setStat(el,text,err,url){const s=$(el);s.classList.add("on");s.classList.toggle("err",!!err);
+  s.querySelector("div").innerHTML=esc(text)+(url?` <a href="${esc(url)}" target="_blank" rel="noopener">See log ↗</a>`:"");}
+const clearStat=el=>$(el).classList.remove("on");
+
+// ---------- cards ----------
+const fee=()=>Number(WL.settings.fee_percent??13.25);
+function profitOf(d,resale){if(d.price==null||!resale)return null;
+  const cost=d.price+(d.shipping||0), p=resale*Math.max(1,d.qty||1)*(1-fee()/100)-cost; return {p,m:cost>0?p/cost*100:null}}
+function card(d,{resale,label,isNew,hideBtn}={}){
+  const pf=profitOf(d,resale);
+  const unit=d.qty>1&&d.price!=null?`<span>${d.qty} units · ${money(d.price/d.qty)}/ea</span>`:"";
+  return `<div class="card"><a class="thumb" href="${esc(d.url)}" target="_blank" rel="noopener" ${d.image?`style="background-image:url('${esc(d.image)}')"`:""}>${d.image?"":"🏷️"}</a><div>
+   <a class="ttl" href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a>
+   <div class="meta"><span class="price">${d.price!=null?money(d.price):"price ?"}</span>${d.shipping?`<span>+${money(d.shipping)} ship</span>`:""}${unit}</div>
+   <div class="meta">${pf?`<span class="profit ${pf.p>=0?"pos":"neg"}">${pf.p>=0?"+":""}${money(pf.p)}${pf.m!=null?` (${pf.m.toFixed(0)}%)`:""}</span>`:""}
+     <span class="tag ${esc(d.source)}">${esc(d.source)}</span>${d.bulk?`<span class="tag bulk">BULK</span>`:""}${isNew?`<span class="tag new">NEW</span>`:""}
+     ${label?`<span>${esc(label)}</span>`:""}<span>${ago(d.posted||d.first_seen)}</span></div>
+   <div class="acts"><a class="btn small" href="${esc(d.url)}" target="_blank" rel="noopener">Open ↗</a>${hideBtn?`<button class="btn small" onclick="hideDeal('${d.id}')">Hide</button>`:""}</div>
+  </div></div>`;
+}
+
+// ---------- search ----------
+function renderSearchForm(){
+  $("#qcat").innerHTML=CATS.map(c=>`<button type="button" class="chip ${c===qCat?"on":""}" onclick="qCat='${c}';renderSearchForm()">${c}</button>`).join("");
+  $("#qsrc").innerHTML=SRCS.map(s=>`<label class="tog"><input type="checkbox" ${qSrc.includes(s)?"checked":""} onchange="qSrc=this.checked?[...qSrc,'${s}']:qSrc.filter(x=>x!=='${s}')"> ${s}</label>`).join("");
+}
+function renderResults(){
+  const d=SEARCHD, res=Number($("#qresale").value)||null;
+  if(!d.query){$("#resHead").innerHTML="";$("#results").innerHTML=`<div class="empty">Type anything above and tap <b>Search</b>.<br>It runs on GitHub's servers — usually about a minute — so your phone's battery and data barely notice.</div>`;return}
+  const errs=(d.log||[]).filter(l=>l.status!=="ok");
+  $("#resHead").innerHTML=`<div class="hint" style="flex:1"><b style="color:var(--text)">${(d.results||[]).length} result${(d.results||[]).length===1?"":"s"}</b> for “${esc(d.query)}” · ${ago(d.run_at)}${errs.length?` · <span style="color:var(--bad)">${errs.map(e=>esc(e.source+": "+e.msg)).join("; ")}</span>`:""}</div>
+    <button class="btn small" onclick="watchThis()">☆ Save to watchlist</button>`;
+  $("#results").innerHTML=(d.results||[]).map(r=>card(r,{resale:res})).join("")||`<div class="empty">Nothing matched. Try fewer keywords or a higher max price.</div>`;
+}
+async function doSearch(){
+  const q=$("#q").value.trim(); if(!q){$("#q").focus();return}
+  if(!ready()){toast("Finish Setup first");show("setup");return}
+  if(busy){toast("A scan is already running");return}
+  busy=true;$("#goBtn").disabled=true;$("#q").blur();
+  $("#resHead").innerHTML="";$("#results").innerHTML="";
+  const inputs={mode:"search",query:q,category:qCat,max_price:$("#qmax").value||"",min_qty:$("#qqty").value||"1",
+    exclude:$("#qex").value||"",sources:qSrc.join(",")||SRCS.join(",")};
+  LS.set("lastq",{...inputs,resale:$("#qresale").value});
+  try{await runScan(inputs,t=>setStat("#sstat",t));SEARCHD=await readJSON("search.json");clearStat("#sstat");renderResults();}
+  catch(e){setStat("#sstat",e.message,true,e.url)}
+  finally{busy=false;$("#goBtn").disabled=false}
+}
+async function watchThis(){
+  const p=SEARCHD.params||{};
+  WL.items.push({id:"w"+Date.now().toString(36),name:SEARCHD.query,category:p.category||qCat,keywords:SEARCHD.query,
+    exclude:p.exclude||"",max_price:p.max_price?Number(p.max_price):null,resale_value:Number($("#qresale").value)||null,
+    min_qty:Number(p.min_qty)||1,sources:p.sources||SRCS,active:true});
+  try{await saveWL("Watch: "+SEARCHD.query);toast("Saved to watchlist");renderWatch()}catch(e){if(e.message!=="not connected")toast(e.message)}
+}
+
+// ---------- deals ----------
+function renderDeals(){
+  $("#dcat").innerHTML=["",...CATS].map(c=>`<button class="chip ${c===dCat?"on":""}" onclick="dCat='${c}';renderDeals()">${c||"All"}</button>`).join("");
+  const items=Object.fromEntries(WL.items.map(i=>[i.id,i]));
+  let ds=(DEALS.deals||[]).filter(d=>items[d.watch_id]&&!hidden.has(d.id)&&(!dCat||items[d.watch_id].category===dCat)&&(!$("#dbulk").checked||d.bulk));
+  const s=$("#dsort").value, pv=d=>profitOf(d,items[d.watch_id].resale_value)?.p;
+  if(s==="profit")ds.sort((a,b)=>(pv(b)??-1e9)-(pv(a)??-1e9));
+  if(s==="unit")ds.sort((a,b)=>(a.price??1e9)/a.qty-(b.price??1e9)/b.qty);
+  if(s==="price")ds.sort((a,b)=>(a.price??1e9)-(b.price??1e9));
+  $("#deals").innerHTML=ds.map(d=>card(d,{resale:items[d.watch_id].resale_value,label:items[d.watch_id].name,isNew:d.first_seen===DEALS.updated,hideBtn:true})).join("")
+    ||`<div class="empty">${DEALS.updated?"No deals match right now.":"No scans yet — tap <b>Scan watchlist</b>."}</div>`;
+  $("#dlog").innerHTML=(DEALS.log||[]).map(l=>`<div class="${l.status}">${esc(l.source)} · ${esc(l.item)} — ${esc(l.msg)}</div>`).join("")||"—";
+  $("#sub").textContent=DEALS.updated?`Watchlist scanned ${ago(DEALS.updated)}${DEALS.new?` · ${DEALS.new} new`:""}`:"";
+}
+$("#dsort").onchange=renderDeals;$("#dbulk").onchange=renderDeals;
+function hideDeal(id){hidden.add(id);LS.set("hidden",[...hidden].slice(-2000));renderDeals()}
+async function scanWatchlist(){
+  if(!ready()){toast("Finish Setup first");show("setup");return}
+  if(busy){toast("A scan is already running");return}
+  busy=true;$("#scanBtn").disabled=true;
+  try{await runScan({mode:"watchlist"},t=>setStat("#dstat",t));DEALS=await readJSON("deals.json");clearStat("#dstat");renderDeals();toast(`${DEALS.new||0} new deals`)}
+  catch(e){setStat("#dstat",e.message,true,e.url)}
+  finally{busy=false;$("#scanBtn").disabled=false}
+}
+
+// ---------- watchlist ----------
+function renderWatch(){
+  $("#wlist").innerHTML=WL.items.map((w,i)=>`<div class="witem ${w.active===false?"off":""}"><div style="flex:1">
+     <div class="n">${esc(w.name)}</div><div class="s">${esc(w.category)} · “${esc(w.keywords)}” · ≤ ${w.max_price?money(w.max_price):"any"}${w.min_qty>1?` · qty ≥ ${w.min_qty}`:""}${w.resale_value?` · resells ${money(w.resale_value)}/ea`:""}</div></div>
+     <button class="btn small" onclick="editItem(${i})">Edit</button></div>`).join("")||`<div class="empty">Nothing saved yet. Search for something, then tap “Save to watchlist”.</div>`;
+}
+function editItem(i){
+  editing=i??null; const w=i!=null?WL.items[i]:{category:CATS[0],min_qty:1,sources:SRCS,active:true};
+  $("#eCat").innerHTML=CATS.map(c=>`<option>${c}</option>`).join("");
+  $("#eName").value=w.name||"";$("#eKw").value=w.keywords||"";$("#eCat").value=w.category;$("#eQty").value=w.min_qty||1;
+  $("#eMax").value=w.max_price??"";$("#eRes").value=w.resale_value??"";$("#eEx").value=w.exclude||"";$("#eOn").checked=w.active!==false;
+  $("#eSrc").innerHTML=SRCS.map(s=>`<label class="tog"><input type="checkbox" value="${s}" ${(w.sources||SRCS).includes(s)?"checked":""}> ${s}</label>`).join("");
+  $("#dlgT").textContent=i!=null?"Edit watch item":"New watch item";$("#eDel").style.display=i!=null?"":"none";$("#dlg").showModal();
+}
+async function saveItem(){
+  const kw=$("#eKw").value.trim(); if(!kw){toast("Keywords are required");return}
+  const n=x=>x===""?null:Number(x);
+  const w={...(editing!=null?WL.items[editing]:{id:"w"+Date.now().toString(36)}),name:$("#eName").value.trim()||kw,keywords:kw,category:$("#eCat").value,
+    min_qty:Number($("#eQty").value)||1,max_price:n($("#eMax").value),resale_value:n($("#eRes").value),exclude:$("#eEx").value.trim(),
+    sources:[...document.querySelectorAll("#eSrc input:checked")].map(x=>x.value),active:$("#eOn").checked};
+  if(editing!=null)WL.items[editing]=w;else WL.items.push(w);
+  try{await saveWL((editing!=null?"Edit: ":"Add: ")+w.name);$("#dlg").close();toast("Saved");renderWatch();renderDeals()}catch(e){if(e.message!=="not connected")toast(e.message)}
+}
+async function delItem(){const w=WL.items[editing];WL.items.splice(editing,1);
+  try{await saveWL("Remove: "+w.name);$("#dlg").close();renderWatch();renderDeals()}catch(e){toast(e.message)}}
+
+// ---------- setup ----------
+function renderSetup(){$("#cOwner").value=conn.owner||"";$("#cRepo").value=conn.repo||"";$("#cToken").value=conn.token?"••••••••":"";
+  $("#sFee").value=WL.settings.fee_percent??13.25;
+  $("#subs").innerHTML=CATS.map(c=>`<label class="field"><span>${c}</span><input data-c="${c}" value="${esc(WL.settings.subreddits[c]||"")}"></label>`).join("");
+  $("#needSetup").style.display=ready()?"none":"";}
+async function saveConn(){
+  const t=$("#cToken").value.trim();
+  conn={owner:$("#cOwner").value.trim(),repo:$("#cRepo").value.trim(),token:t.startsWith("••")?conn.token:t};branch=null;
+  $("#connMsg").textContent="Testing…";
+  try{const r=await gh("");branch=r.default_branch;await gh("/actions/workflows/scan.yml");
+    LS.set("conn",conn);$("#connMsg").textContent="✅ Connected to "+r.full_name+". You're ready to search.";await boot();}
+  catch(e){$("#connMsg").textContent="❌ "+e.message}
+}
+function forget(){conn={owner:conn.owner,repo:conn.repo};LS.set("conn",conn);renderSetup();toast("Token removed from this phone")}
+async function saveSettings(){WL.settings.fee_percent=Number($("#sFee").value)||0;
+  document.querySelectorAll("#subs input").forEach(i=>WL.settings.subreddits[i.dataset.c]=i.value.trim());
+  try{await saveWL("Settings");toast("Saved");renderDeals();renderResults()}catch(e){if(e.message!=="not connected")toast(e.message)}}
+
+// ---------- themes ----------
+function renderThemes(){
+  $("#themes").innerHTML=THEMES.map(t=>{const[id,name,bg,panel,panel2,line,text,mute,acc,accText,acc2,good,bad,stripe]=t,st=stripe||[acc,acc2,good,bad];
+    return `<button class="sw ${id===THEME_ID?"on":""}" style="background:${panel};color:${text};border-color:${id===THEME_ID?acc:line}" onclick="pickTheme('${id}')">
+      ${esc(name)}<div class="bars">${st.map(c=>`<i style="background:${c}"></i>`).join("")}</div>
+      <div class="mini"><b style="background:${acc};color:${accText}">Deal</b><b style="background:${bg};color:${mute}">$9.99</b></div></button>`}).join("");
+}
+function pickTheme(id){THEME_ID=id;LS.set("theme",id);applyTheme(id);renderThemes();toast(THEMES.find(t=>t[0]===id)[1])}
+function openThemes(){show("setup");setTimeout(()=>$("#themePanel").scrollIntoView({behavior:"smooth",block:"start"}),50)}
+
+// ---------- boot ----------
+$("#qresale").oninput=renderResults;
+async function boot(){
+  guessRepo();
+  const lq=LS.get("lastq",null);
+  if(lq&&!$("#q").value){$("#q").value=lq.query||"";$("#qmax").value=lq.max_price||"";$("#qqty").value=lq.min_qty||1;$("#qresale").value=lq.resale||"";$("#qex").value=lq.exclude||"";
+    if(CATS.includes(lq.category))qCat=lq.category;if(lq.sources)qSrc=lq.sources.split(",");}
+  renderSearchForm();
+  try{await loadWL()}catch(e){toast(e.message)}
+  try{DEALS=await readJSON("deals.json")}catch(e){}
+  try{SEARCHD=await readJSON("search.json")}catch(e){}
+  renderSetup();renderThemes();renderResults();renderDeals();renderWatch();
+}
+boot();
+</script></body></html>

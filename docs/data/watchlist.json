@@ -1,0 +1,108 @@
+{
+ "settings": {
+  "fee_percent": 13.25,
+  "subreddits": {
+   "Electronics": "buildapcsales",
+   "Retro games": "gamesale",
+   "Toys": "legodeal"
+  }
+ },
+ "items": [
+  {
+   "id": "w1",
+   "name": "AirPods Pro",
+   "category": "Electronics",
+   "keywords": "airpods pro",
+   "exclude": "case only, replacement",
+   "max_price": 190,
+   "resale_value": null,
+   "min_qty": 1,
+   "sources": [
+    "slickdeals",
+    "reddit",
+    "ebay"
+   ],
+   "active": true
+  },
+  {
+   "id": "w2",
+   "name": "2TB NVMe SSD",
+   "category": "Electronics",
+   "keywords": "2tb nvme",
+   "exclude": "",
+   "max_price": 200,
+   "resale_value": null,
+   "min_qty": 1,
+   "sources": [
+    "slickdeals",
+    "reddit",
+    "ebay"
+   ],
+   "active": true
+  },
+  {
+   "id": "w3",
+   "name": "Game Boy game lots",
+   "category": "Retro games",
+   "keywords": "game boy lot",
+   "exclude": "repro, reproduction, for parts, broken",
+   "max_price": 150,
+   "resale_value": null,
+   "min_qty": 3,
+   "sources": [
+    "slickdeals",
+    "reddit",
+    "ebay"
+   ],
+   "active": true
+  },
+  {
+   "id": "w4",
+   "name": "N64 game lots",
+   "category": "Retro games",
+   "keywords": "n64 lot",
+   "exclude": "repro, reproduction, for parts, broken",
+   "max_price": 200,
+   "resale_value": null,
+   "min_qty": 3,
+   "sources": [
+    "slickdeals",
+    "reddit",
+    "ebay"
+   ],
+   "active": true
+  },
+  {
+   "id": "w5",
+   "name": "LEGO sets",
+   "category": "Toys",
+   "keywords": "lego",
+   "exclude": "knock off, minifig only, instructions only",
+   "max_price": 80,
+   "resale_value": null,
+   "min_qty": 1,
+   "sources": [
+    "slickdeals",
+    "reddit",
+    "ebay"
+   ],
+   "active": true
+  },
+  {
+   "id": "w6",
+   "name": "Hot Wheels lots & multipacks",
+   "category": "Toys",
+   "keywords": "hot wheels",
+   "exclude": "",
+   "max_price": 60,
+   "resale_value": null,
+   "min_qty": 10,
+   "sources": [
+    "slickdeals",
+    "reddit",
+    "ebay"
+   ],
+   "active": true
+  }
+ ]
+}
