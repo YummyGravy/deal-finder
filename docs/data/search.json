@@ -1,7 +1,7 @@
 {
  "query": "Dreamcast",
  "params": {
-  "category": "Retro games",
+  "category": "Electronics",
   "max_price": "",
   "min_qty": "1",
   "exclude": "",
@@ -10,8 +10,8 @@
    "ebay"
   ]
  },
- "run_at": "2026-11-18T05:48:59+00:00",
- "run_id": "44246842467",
+ "run_at": "2026-11-18T05:58:51+00:00",
+ "run_id": "44247942223",
  "results": [
   {
    "id": "3f2b6094cc4c",
