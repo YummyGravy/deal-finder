@@ -3,9 +3,14 @@
 Search for deals from your phone. Each search runs on GitHub's free servers (about a minute), so your phone isn't doing the work.
 You can type any search, save it to a watchlist, and scan the whole watchlist with one tap.
 
-- **Search tab**: type anything, then tap Search. Results show price, quantity, price per unit and estimated profit.
-- **Deals tab**: everything your saved searches have found. Tap **Scan watchlist** to check them all again.
-- **Watchlist tab**: edit or delete saved searches.
+- **Search**: type anything, then tap Search. Results show price, quantity, price per unit and estimated profit.
+- **Scan watchlist**: everything your saved searches have found. Tap **Scan watchlist** to check them all again.
+- **Watchlist**: edit or delete saved searches.
+- **Your deals**: track each deal's status (New → Interested → Bought → Listed → Sold, or Passed) with the scroll wheel.
+  Filter by status, collapse or expand everything.
+- **Review new deals**: go through fresh finds one at a time, with undo.
+- **Backup and sync**: statuses sync between devices through this repository (`docs/data/status.json`).
+  You can also copy a backup code or save a backup file.
 
 Optional automatic daily scan: open `.github/workflows/scan.yml` and remove the `#` from the two `schedule` lines.
 
