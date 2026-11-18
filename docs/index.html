@@ -191,8 +191,7 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
     <div class="panel">
       <h3 style="margin-top:0">Profit &amp; sources</h3>
       <label class="field"><span>Resale fee % (taken off resale value; eBay ≈ 13%)</span><input id="sFee" type="number" inputmode="decimal"></label>
-      <p class="hint" style="margin-top:12px">Subreddits searched per category (comma-separated):</p>
-      <div id="subs" class="grid" style="grid-template-columns:1fr"></div>
+      <div id="subs" style="display:none"></div>
       <button class="btn pri" style="margin-top:10px" onclick="saveSettings()">Save</button>
       <p class="hint">eBay results need free API keys saved as repo secrets — see the setup guide.</p>
     </div>
@@ -223,7 +222,7 @@ dialog::backdrop{background:rgba(0,0,0,.6)}
 <div class="toast" id="toast"></div>
 
 <script>
-const CATS=["Electronics","Retro games","Toys"], SRCS=["slickdeals","reddit","ebay"];
+const CATS=["Electronics","Retro games","Toys"], SRCS=["slickdeals","ebay"];
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const money=v=>v==null?"":"$"+Number(v).toFixed(2);
@@ -435,7 +434,7 @@ async function boot(){
   guessRepo();
   const lq=LS.get("lastq",null);
   if(lq&&!$("#q").value){$("#q").value=lq.query||"";$("#qmax").value=lq.max_price||"";$("#qqty").value=lq.min_qty||1;$("#qresale").value=lq.resale||"";$("#qex").value=lq.exclude||"";
-    if(CATS.includes(lq.category))qCat=lq.category;if(lq.sources)qSrc=lq.sources.split(",");}
+    if(CATS.includes(lq.category))qCat=lq.category;if(lq.sources)qSrc=lq.sources.split(",").filter(x=>SRCS.includes(x));if(!qSrc.length)qSrc=[...SRCS];}
   renderSearchForm();
   try{await loadWL()}catch(e){toast(e.message)}
   try{DEALS=await readJSON("deals.json")}catch(e){}

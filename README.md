@@ -40,8 +40,8 @@ Then in the repository: **Settings → Secrets and variables → Actions → New
 ---
 
 ## Good to know
-- **Sources:** Slickdeals and eBay (with keys) are the main sources. Reddit often blocks cloud servers, so expect Reddit errors.
-  You can untick Reddit in a search's filters.
+- **Sources:** Slickdeals (works out of the box) and eBay (needs the free keys in step 5).
+  Reddit isn't included because it blocks GitHub's servers.
   If a source fails, the error shows above the results, and **See log** opens the full run on GitHub.
 - **Cost:** GitHub Actions is free for public repositories.
 - **Privacy:** the repository is public (GitHub Pages is free only for public repos).

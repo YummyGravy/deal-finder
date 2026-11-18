@@ -27,7 +27,7 @@ on:
         default: ""
       sources:
         type: string
-        default: "slickdeals,reddit,ebay"
+        default: "slickdeals,ebay"
   # Optional automatic scan of your watchlist. Remove the # on the next two lines to turn it on
   # (times are UTC; 12:00 UTC = 7am New York in winter).
   # schedule:

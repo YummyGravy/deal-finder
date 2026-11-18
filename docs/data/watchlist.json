@@ -19,7 +19,6 @@
    "min_qty": 1,
    "sources": [
     "slickdeals",
-    "reddit",
     "ebay"
    ],
    "active": true
@@ -35,7 +34,6 @@
    "min_qty": 1,
    "sources": [
     "slickdeals",
-    "reddit",
     "ebay"
    ],
    "active": true
@@ -51,7 +49,6 @@
    "min_qty": 3,
    "sources": [
     "slickdeals",
-    "reddit",
     "ebay"
    ],
    "active": true
@@ -67,7 +64,6 @@
    "min_qty": 3,
    "sources": [
     "slickdeals",
-    "reddit",
     "ebay"
    ],
    "active": true
@@ -83,7 +79,6 @@
    "min_qty": 1,
    "sources": [
     "slickdeals",
-    "reddit",
     "ebay"
    ],
    "active": true
@@ -99,7 +94,6 @@
    "min_qty": 10,
    "sources": [
     "slickdeals",
-    "reddit",
     "ebay"
    ],
    "active": true
